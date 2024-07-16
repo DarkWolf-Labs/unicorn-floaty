@@ -1,4 +1,5 @@
 # Configure pull through registry for Registry1 (Iron Bank) so we can use their hardened TAK Server container
+
 resource "google_artifact_registry_repository" "registry-one-repo" {
   location = var.region
   project  = module.project.id
