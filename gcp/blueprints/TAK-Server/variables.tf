@@ -1,7 +1,7 @@
 variable "region" {
   description = "GCP Region to deploy into"
-  type = string
-  default = "us-east4"
+  type        = string
+  default     = "us-east4"
 }
 
 variable "prefix" {
@@ -27,6 +27,16 @@ variable "project_id" {
   type        = string
 }
 
+variable "vpc_config" {
+  description = "Shared VPC network configurations to use. If null networks will be created in projects with pre-configured values."
+  type = object({
+    host_project      = string
+    network_self_link = string
+    subnet_self_link  = string
+  })
+  default = null
+}
+
 variable "service_encryption_keys" {
   description = "Cloud KMS to use to encrypt different services. The key location should match the service region."
   type = object({
@@ -38,12 +48,35 @@ variable "service_encryption_keys" {
   default = null
 }
 
-variable "vpc_config" {
-  description = "Shared VPC network configurations to use. If null networks will be created in projects with pre-configured values."
+variable "sql_configuration" {
+  description = "Cloud SQL configuration."
   type = object({
-    host_project      = string
-    network_self_link = string
-    subnet_self_link  = string
+    availability_type = string
+    database_version  = string
+    psa_range         = string
+    tier              = string
   })
-  default = null
+  default = {
+    availability_type = "ZONAL"
+    database_version  = "POSTGRES_13"
+    psa_range         = "10.60.0.0/16"
+    tier              = "db-g1-small"
+  }
+}
+
+variable "sql_users" {
+  description = "Cloud SQL user emails."
+  type        = list(string)
+  default     = []
+}
+
+variable "postgres_database" {
+  description = "`postgres` database."
+  type        = string
+  default     = "tak"
+}
+
+variable "postgres_user_password" {
+  description = "`postgres` user password."
+  type        = string
 }
