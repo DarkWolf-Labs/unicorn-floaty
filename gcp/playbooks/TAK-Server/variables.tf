@@ -91,3 +91,30 @@ variable "registry_password_secret" {
   description = "The *name* of the secret that you created in the README"
   type        = string
 }
+
+variable "registry_one_db_image_path" {
+  # https://registry1.dso.mil/harbor/projects/3/repositories/tpc%2Ftak%2Ftak-server-db/artifacts-tab
+  description = "Path to the registry1 image for the tak-server-db"
+  default     = "ironbank/tpc/tak/tak-server-db"
+}
+
+variable "registry_one_db_image_version" {
+  description = "Version to deploy of the db image, please don't use latest"
+  default     = "5.0"
+}
+
+variable "registry_one_image_path" {
+  # https://registry1.dso.mil/harbor/projects/3/repositories/tpc%2Ftak%2Ftak-server/artifacts-tab
+  description = "Path to the registry1 image for the tak-server"
+  default     = "ironbank/tpc/tak/tak-server"
+}
+
+variable "registry_one_image_version" {
+  description = "Version to deploy of the tak-server image, please don't use latest"
+  default     = "5.0"
+}
+
+variable "instance_type" {
+  description = "Instance type for TAK server"
+  default     = "n2-standard-2"
+}
