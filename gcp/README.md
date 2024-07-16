@@ -9,7 +9,7 @@
 
 It is recommended that you run both `gcloud auth login`, `gcloud auth application-default login`, and `gcloud config set project <project>` to make sure that your ephemeral credentials are up to date before running any of the blueprints
 
-## Blueprint Descriptions
+## Playbook Descriptions
 
 ### TAK Server
 
