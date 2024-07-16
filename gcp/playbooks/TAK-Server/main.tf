@@ -23,11 +23,13 @@ module "project" {
   project_create  = var.project_create != null
   prefix          = var.project_create == null ? null : var.prefix
   services = [
+    "artifactregistry.googleapis.com",
     "compute.googleapis.com",
     "servicenetworking.googleapis.com",
     "sqladmin.googleapis.com",
     "storage.googleapis.com",
-    "storage-component.googleapis.com"
+    "storage-component.googleapis.com",
+    "secretmanager.googleapis.com"
   ]
   service_encryption_key_ids = {
     aiplatform = [try(local.service_encryption_keys.compute, null)]

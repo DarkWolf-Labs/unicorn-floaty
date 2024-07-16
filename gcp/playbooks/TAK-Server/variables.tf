@@ -80,3 +80,14 @@ variable "postgres_user_password" {
   description = "`postgres` user password."
   type        = string
 }
+
+variable "registry_username" {
+  description = "Username for Registry1 https://registry1.dso.mil/"
+  type        = string
+}
+
+variable "registry_password_secret" {
+  # DO NOT ENTER YOUR PASSWORD IN YOUR TFVARS, THE PASSWORD GOBLINS WILL HUNT YOU DOWN
+  description = "The *name* of the secret that you created in the README"
+  type        = string
+}

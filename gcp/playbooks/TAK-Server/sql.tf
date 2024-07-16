@@ -4,10 +4,10 @@ module "db" {
   project_id = module.project.project_id
   network_config = {
     connectivity = {
-    #   psa_config = {
-    #     private_network = module.vpc[0].self_link
-    #   }
-      psc_allowed_consumer_projects = [module.project.project_id,]
+      #   psa_config = {
+      #     private_network = module.vpc[0].self_link
+      #   }
+      psc_allowed_consumer_projects = [module.project.project_id, ]
     }
   }
   name                          = "db"
