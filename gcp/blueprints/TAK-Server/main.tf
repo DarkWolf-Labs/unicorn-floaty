@@ -24,6 +24,7 @@ module "project" {
   prefix          = var.project_create == null ? null : var.prefix
   services = [
     "compute.googleapis.com",
+    "servicenetworking.googleapis.com",
     "sqladmin.googleapis.com",
     "storage.googleapis.com",
     "storage-component.googleapis.com"
