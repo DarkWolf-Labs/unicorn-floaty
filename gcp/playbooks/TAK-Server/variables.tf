@@ -8,13 +8,13 @@ variable "region" {
     condition = contains( ["us-central1", "us-central2", "us-east1", "us-east2", "us-east4", "us-south1", "us-west1", "us-west3", "us-west4"], var.region)
   }
 }
-
 variable "prefix" {
   description = "Prefix used for resource names."
   type        = string
+
   validation {
-    condition     = regex_match("^[a-zA-Z]{2,5}$", var.prefix)
-    error_message = "Prefix must have between 2 and 5 alphabetic characters."
+    error_message = "Prefix must have between 2 and 5 alphanumeric characters."
+    condition = length(var.prefix) >= 2 && length(var.prefix) <= 5
   }
 }
 
@@ -107,13 +107,31 @@ variable "registry_one_image_version" {
   description = "Version to deploy of the tak-server image, please don't use latest"
   default     = "5.0"
 }
-
 variable "instance_type" {
   description = "Instance type for TAK server"
   default     = "n2-standard-2"
 
   validation {
-    condition     = lookup(gcp_compute_valid_machine_types(), var.instance_type)
+    # Use a set of valid instance types here instead of relying on a non-existent function.
+    condition = contains([
+      "n2-standard-2",
+      "n2-standard-4",
+      "n2-standard-8",
+      "n2-standard-16",
+      "n2-standard-32",
+      "n4-standard-4",
+      "n4-standard-8",
+      "n4-standard-16",
+      "n4-standard-32",
+      "n2d-standard-4",
+      "n2d-standard-8",
+      "n2d-standard-16",
+      "n2d-standard-32",
+      "c4-standard-4",
+      "c4-standard-8",
+      "c4-standard-16",
+      "c4-standard-32",
+    ], var.instance_type)
     error_message = "Invalid GCP instance class: ${var.instance_type}"
   }
 }
