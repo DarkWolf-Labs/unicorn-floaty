@@ -39,7 +39,7 @@ resource "google_secret_manager_secret_iam_binding" "core-config-secret-binding"
 
 # Store this as a secret because it has the db-password in it
 resource "google_secret_manager_secret_version" "core-config-version" {
-  secret = google_secret_manager_secret.core-config.secret_id
+  secret = google_secret_manager_secret.core-config.id
   secret_data = templatefile("./templates/CoreConfig.xml.tftpl", {
     db_user     = "cot",
     db_password = random_password.db-password.result,
