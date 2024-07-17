@@ -16,6 +16,12 @@ module "db" {
   tier                          = "db-g1-small"
   gcp_deletion_protection       = false
   terraform_deletion_protection = false
+  users = {
+    cot = {
+      type = "BUILT_IN",
+      password = random_password.db-password.result
+    }
+  }
 }
 
 resource "random_password" "db-password" {
@@ -29,11 +35,3 @@ resource "google_sql_database" "cot-db" {
   name     = "cot"
   instance = module.db.name
 }
-
-resource "google_sql_user" "user" {
-  name     = "cot"
-  project  = module.project.id
-  instance = module.db.name
-  password = random_password.db-password.result
-}
-

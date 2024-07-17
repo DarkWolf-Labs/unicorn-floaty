@@ -34,6 +34,6 @@ gcloud auth configure-docker \
 docker pull ${image_path}
 
 mkdir -p /opt/tak/
-gcloud secrets versions access latest --secret ${gitlab_rb_secret_name} --out-file /opt/tak/CoreConfig.xml
+gcloud secrets versions access latest --secret ${core_config} --out-file /opt/tak/CoreConfig.xml
 
 docker run --name takserver-hardened -p 8089:8089 -p 8443:8443 -p 8444:8444 -p 8446:8446 -t -d takserver-hardened --volume /opt/tak/CoreConfig.xml:/opt/tak/CoreConfig.xml
