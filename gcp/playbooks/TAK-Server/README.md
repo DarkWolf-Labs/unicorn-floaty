@@ -8,11 +8,10 @@ This containerized deployment is based off of the deployment instructions found 
 
 This blueprint deploys a TAK server with the following configuration
 
-* Managed Instance Group (MIG) providing high-availability
 * Instances running the latest Rocky Linux
-* The latest TAK server deployed to OpenJDK
-* A highly-available CloudSQL instance with PostGIS extension enabled
+* A highly-available CloudSQL instance (w/o PostGIS extension enabled, instructions here https://cloud.google.com/sql/docs/postgres/extensions)
 * Pull through proxy Artifact Registry to get access to Registry1 for hardened containers
+* The latest TAK server deployed using hardened container from Registry1
 
 ## Getting TAK Server
 

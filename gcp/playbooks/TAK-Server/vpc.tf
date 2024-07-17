@@ -28,6 +28,22 @@ module "vpc-firewall" {
       targets       = ["iap-ssh"]
       rules         = [{ protocol = "tcp", ports = [22] }]
     }
+    ("${var.prefix}-tak") = {
+      description = "Inbound ports required for TAK Server"
+      target      = ["tak-server"]
+      rules = [
+        {
+          source_ranges = ["10.0.0.0/20"]
+          protocol      = "tcp",
+          ports = [
+            8089,
+            8443,
+            8444,
+            8446
+          ]
+        }
+      ]
+    }
   }
 }
 

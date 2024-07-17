@@ -59,7 +59,10 @@ module "compute-engine-vm" {
     network    = module.vpc[0].network.self_link
     subnetwork = module.vpc[0].subnet_ids["${var.region}/${var.prefix}-subnet"]
   }]
-  tags = ["iap-ssh"]
+  tags = [
+    "iap-ssh",
+    "tak-server"
+  ]
   shielded_config = {
     enable_secure_boot          = true
     enable_vtpm                 = true
