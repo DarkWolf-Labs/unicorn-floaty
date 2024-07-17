@@ -15,13 +15,6 @@ module "tak-service-account" {
   }
 }
 
-module "cos-tak" {
-  source          = "../..//modules/cloud-config-container/cos-generic-metadata"
-  container_image = "${local.registry-one}/${var.registry_one_image_path}:${var.registry_one_image_version}"
-  container_name  = "tak-server"
-  container_args  = "sleep"
-}
-
 # Google Compute Engine VM Module
 module "compute-engine-vm" {
   source        = "../../modules/compute-vm"
@@ -41,15 +34,21 @@ module "compute-engine-vm" {
   }
   boot_disk = {
     auto_delete = true
-    size        = 30
     initialize_params = {
-      image = "projects/rocky-linux-cloud/global/images/rocky-linux-9-optimized-gcp"
+      size = 30
+
+      image = "rocky-linux-cloud/rocky-linux-9-optimized-gcp"
     }
   }
 
+  # Check the status of the startup script on the box with `sudo journalctl -u google-startup-scripts.service`
   metadata = {
-    user-data = module.cos-tak.cloud_config
+    startup-script = templatefile("./templates/userdata.tftpl", {
+      region     = var.region
+      image_path = "${local.registry-one}/${var.registry_one_image_path}:${var.registry_one_image_version}"
+    })
   }
+
   service_account = {
     email = module.tak-service-account.email
   }
