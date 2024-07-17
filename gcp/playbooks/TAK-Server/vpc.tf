@@ -23,9 +23,9 @@ module "vpc-firewall" {
   ingress_rules = {
     #TODO Remove and rely on 'ssh' tag once terraform-provider-google/issues/9273 is fixed
     ("${var.prefix}-iap") = {
-      description   = "Enable SSH from IAP on Notebooks."
+      description   = "Enable SSH from IAP target VMs."
       source_ranges = ["35.235.240.0/20"]
-      targets       = ["notebook-instance"]
+      targets       = ["iap-ssh"]
       rules         = [{ protocol = "tcp", ports = [22] }]
     }
   }
