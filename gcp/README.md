@@ -11,6 +11,10 @@ It is recommended that you run both `gcloud auth login`, `gcloud auth applicatio
 
 ## Playbook Descriptions
 
+![Network diagram for playbooks](./assets/network-flow.png)
+These blueprints are meant to demonstrate a potential system for deploying OpenVPN, as well as various services on both Ubuntu Linux and Rocky Linux.
+In production, we would want to run all of these on the same OS.
+
 ### TAK Server
 
 #### Description
