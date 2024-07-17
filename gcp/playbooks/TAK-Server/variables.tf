@@ -2,14 +2,19 @@ variable "region" {
   description = "GCP Region to deploy into"
   type        = string
   default     = "us-east4"
+
+  validation {
+    error_message = "Must be a valid GCP region"
+    condition = contains( ["us-central1", "us-central2", "us-east1", "us-east2", "us-east4", "us-south1", "us-west1", "us-west3", "us-west4"], var.region)
+  }
 }
 
 variable "prefix" {
   description = "Prefix used for resource names."
   type        = string
   validation {
-    condition     = var.prefix != ""
-    error_message = "Prefix cannot be empty."
+    condition     = regex_match("^[a-zA-Z]{2,5}$", var.prefix)
+    error_message = "Prefix must have between 2 and 5 alphabetic characters."
   }
 }
 
@@ -58,7 +63,7 @@ variable "sql_configuration" {
   })
   default = {
     availability_type = "ZONAL"
-    database_version  = "POSTGRES_13"
+    database_version  = "POSTGRES_16"
     psa_range         = "10.60.0.0/16"
     tier              = "db-g1-small"
   }
@@ -68,17 +73,6 @@ variable "sql_users" {
   description = "Cloud SQL user emails."
   type        = list(string)
   default     = []
-}
-
-variable "postgres_database" {
-  description = "`postgres` database."
-  type        = string
-  default     = "tak"
-}
-
-variable "postgres_user_password" {
-  description = "`postgres` user password."
-  type        = string
 }
 
 variable "registry_username" {
@@ -117,4 +111,9 @@ variable "registry_one_image_version" {
 variable "instance_type" {
   description = "Instance type for TAK server"
   default     = "n2-standard-2"
+
+  validation {
+    condition     = lookup(gcp_compute_valid_machine_types(), var.instance_type)
+    error_message = "Invalid GCP instance class: ${var.instance_type}"
+  }
 }
