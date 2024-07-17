@@ -17,8 +17,3 @@ output "internet_gateway_id" {
   description = "The ID of the Internet Gateway"
   value       = module.vpc.internet_gateway_id
 }
-
-output "nat_gateway_ids" {
-  description = "List of NAT Gateway IDs"
-  value       = module.vpc.nat_gateway_ids
-}
