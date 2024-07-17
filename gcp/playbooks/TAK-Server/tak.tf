@@ -4,6 +4,17 @@ locals {
   registry-one = "${var.region}-docker.pkg.dev/${module.project.id}/${google_artifact_registry_repository.registry-one-repo.name}"
 }
 
+module "tak-service-account" {
+  name       = "tak-compute"
+  source     = "../../modules/iam-service-account"
+  project_id = module.project.project_id
+  iam_project_roles = {
+    "${module.project.project_id}" = [
+      "roles/artifactregistry.reader"
+    ]
+  }
+}
+
 module "cos-tak" {
   source          = "../..//modules/cloud-config-container/cos-generic-metadata"
   container_image = "${local.registry-one}/${var.registry_one_image_path}:${var.registry_one_image_version}"
@@ -20,20 +31,27 @@ module "compute-engine-vm" {
   instance_type = var.instance_type
   network_interfaces = [{
     network    = module.vpc[0].network.self_link
-    subnetwork = "projects/${module.project.id}/regions/${var.region}/subnetworks/subnet-${module.project.number}"
+    subnetwork = module.vpc[0].subnet_ids["${var.region}/${var.prefix}-subnet"]
   }]
-  # Persistent Disk Attached to the Compute Engine with KMS
-  attached_disks = [
-    {
-      auto_delete = "true"
-      size        = 20
-      name        = "data-disk"
-      initialize_params = {
-        image = "projects/cos-cloud/global/images/family/cos-stable"
-      }
+  tags = ["iap-ssh"]
+  shielded_config = {
+    enable_secure_boot          = true
+    enable_vtpm                 = true
+    enable_integrity_monitoring = true
+  }
+  boot_disk = {
+    auto_delete = true
+    size        = 30
+    initialize_params = {
+      image = "projects/rocky-linux-cloud/global/images/rocky-linux-9-optimized-gcp"
     }
-  ]
+  }
+
   metadata = {
     user-data = module.cos-tak.cloud_config
   }
+  service_account = {
+    email = module.tak-service-account.email
+  }
 }
+
