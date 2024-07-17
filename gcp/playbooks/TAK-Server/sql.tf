@@ -17,3 +17,23 @@ module "db" {
   gcp_deletion_protection       = false
   terraform_deletion_protection = false
 }
+
+resource "random_password" "db-password" {
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
+resource "google_sql_database" "cot-db" {
+  project  = module.project.id
+  name     = "cot"
+  instance = module.db.name
+}
+
+resource "google_sql_user" "user" {
+  name     = "cot"
+  project  = module.project.id
+  instance = module.db.name
+  password = random_password.db-password.result
+}
+

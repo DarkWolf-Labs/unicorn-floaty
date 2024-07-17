@@ -68,7 +68,7 @@
     </subscription>
 
     <repository enable="true" numDbConnections="16" primaryKeyBatchSize="500" insertionBatchSize="500">
-        <connection url="jdbc:postgresql://${db_ip}:5432/cot" username="${db_user}" password="${db_password}"/>
+        <connection url="jdbc:postgresql://${db_host}:5432/cot" username="${db_user}" password="${db_password}"/>
     </repository>
 
     <repeater enable="true" periodMillis="3000" staleDelayMillis="15000">
@@ -127,49 +127,4 @@
        -->
 
     </security>
-
-    <!--
-        <federation>
-          <federation-server port="9000">
-            <tls context="TLSv1.2"
-             keymanager="SunX509"
-             keystore="JKS" keystoreFile="certs/files/takserver.jks" keystorePass="atakatak"
-             truststore="JKS" truststoreFile="certs/files/fed-truststore.jks" truststorePass="atakatak"/>
-          </federation-server>
-        </federation>
-    -->
-    <!-- previous locations of federate keystore and truststore -->
-    <!--
-    <tls context="TLSv1.2"
-            keymanager="SunX509"
-            keystore="JKS" keystoreFile="certs/TAKServer.jks" keystorePass="atakatak"
-            truststore="JKS" truststoreFile="certs/fed-truststore.jks" truststorePass="atakatak"/>
-    -->
-
-    <!--
-
-    <certificateSigning CA="{TAKServer | MicrosoftCA}">
-        <certificateConfig>
-            <nameEntries>
-                <nameEntry name="O" value="Test Org Name"/>
-                <nameEntry name="OU" value="Test Org Unit Name"/>
-            </nameEntries>
-        </certificateConfig>
-        <TAKServerCAConfig
-            keystore="JKS"
-            keystoreFile="certs/files/intermediate-signing.jks"
-            keystorePass="atakatak"
-            validityDays="30"
-            signatureAlg="SHA256WithRSA" />
-        <MicrosoftCAConfig
-            username="{MS CA Username}"
-            password="{MS CA Password}"
-            truststore="/opt/tak/certs/files/keystore.jks"
-            truststorePass="atakatak"
-            svcUrl="https://{server}/{CA name}_CES_UsernamePassword/service.svc"
-            templateName="Copy of User"/>
-    </certificateSigning>
-
-    -->
-
 </Configuration>

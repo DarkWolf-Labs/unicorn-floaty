@@ -1,14 +1,14 @@
 #!/bin/bash
-sudo dnf makecache
-sudo dnf install -yq dnf-plugin-artifact-registry yum-utils
+dnf makecache
+dnf install -yq dnf-plugin-artifact-registry yum-utils
 
 # Install the ops-agent
 curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
-sudo bash add-google-cloud-ops-agent-repo.sh --also-install
+bash add-google-cloud-ops-agent-repo.sh --also-install
 
 
 # Configure the ops-agent config for tak
-sudo tee -a /etc/google-cloud-ops-agent/config.yaml << EOF
+tee -a /etc/google-cloud-ops-agent/config.yaml << EOF
 logging:
   service:
     pipelines:
@@ -24,11 +24,16 @@ logging:
         - /var/log/tak/tak-rails/*_json.log
         - /var/log/tak/nginx/*.log
 EOF
-sudo systemctl enable --now google-cloud-ops-agent
+systemctl enable --now google-cloud-ops-agent
 
-sudo dnf install docker -yq
+dnf install docker -yq
 
 gcloud auth configure-docker \
     ${region}-docker.pkg.dev
 
 docker pull ${image_path}
+
+mkdir -p /opt/tak/
+gcloud secrets versions access latest --secret ${gitlab_rb_secret_name} --out-file /opt/tak/CoreConfig.xml
+
+docker run --name takserver-hardened -p 8089:8089 -p 8443:8443 -p 8444:8444 -p 8446:8446 -t -d takserver-hardened --volume /opt/tak/CoreConfig.xml:/opt/tak/CoreConfig.xml

@@ -15,6 +15,39 @@ module "tak-service-account" {
   }
 }
 
+resource "google_secret_manager_secret" "core-config" {
+  secret_id = "core-config"
+  project   = module.project.id
+
+  replication {
+    user_managed {
+      replicas {
+        location = var.region
+      }
+    }
+  }
+}
+
+resource "google_secret_manager_secret_iam_binding" "core-config-secret-binding" {
+  project   = module.project.id
+  secret_id = google_secret_manager_secret.core-config.secret_id
+  role      = "roles/secretmanager.secretAccessor"
+  members = [
+    module.tak-service-account.service_account.member,
+  ]
+}
+
+# Store this as a secret because it has the db-password in it
+resource "google_secret_manager_secret_version" "core-config-version" {
+  secret = google_secret_manager_secret.core-config.secret_id
+  secret_data = templatefile("./templates/CoreConfig.xml.tftpl", {
+    db_user     = "cot",
+    db_password = random_password.db-password.result,
+    db_host     = module.db.dns_name,
+  })
+}
+
+
 # Google Compute Engine VM Module
 module "compute-engine-vm" {
   source        = "../../modules/compute-vm"
@@ -44,8 +77,9 @@ module "compute-engine-vm" {
   # Check the status of the startup script on the box with `sudo journalctl -u google-startup-scripts.service`
   metadata = {
     startup-script = templatefile("./templates/userdata.tftpl", {
-      region     = var.region
-      image_path = "${local.registry-one}/${var.registry_one_image_path}:${var.registry_one_image_version}"
+      region      = var.region
+      image_path  = "${local.registry-one}/${var.registry_one_image_path}:${var.registry_one_image_version}",
+      core_config = google_secret_manager_secret.core-config.secret_id
     })
   }
 
