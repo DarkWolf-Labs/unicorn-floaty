@@ -1,0 +1,34 @@
+#!/bin/bash
+sudo dnf makecache
+sudo dnf install -yq dnf-plugin-artifact-registry yum-utils
+
+# Install the ops-agent
+curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
+sudo bash add-google-cloud-ops-agent-repo.sh --also-install
+
+
+# Configure the ops-agent config for tak
+sudo tee -a /etc/google-cloud-ops-agent/config.yaml << EOF
+logging:
+  service:
+    pipelines:
+      default_pipeline:
+        receivers:
+          - syslog
+          - tak_logs
+  receivers:
+    tak_logs:
+      type: files
+      include_paths:
+        - /var/log/tak/*/current
+        - /var/log/tak/tak-rails/*_json.log
+        - /var/log/tak/nginx/*.log
+EOF
+sudo systemctl enable --now google-cloud-ops-agent
+
+sudo dnf install docker -yq
+
+gcloud auth configure-docker \
+    ${region}-docker.pkg.dev
+
+docker pull ${image_path}

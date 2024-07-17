@@ -39,3 +39,22 @@ resource "google_secret_manager_secret_iam_member" "secret-access" {
   role      = "roles/secretmanager.secretAccessor"
   member    = "serviceAccount:service-${module.project.number}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
 }
+
+# Set up a local yum repo
+resource "google_artifact_registry_repository" "rocky-9" {
+  location      = var.region
+  repository_id = "rocky-9"
+  project       = module.project.id
+
+  format = "YUM"
+  mode   = "REMOTE_REPOSITORY"
+  remote_repository_config {
+    description = "Rocky 9 remote repository"
+    yum_repository {
+      public_repository {
+        repository_base = "ROCKY"
+        repository_path = "pub/rocky/9/BaseOS/x86_64/os"
+      }
+    }
+  }
+}
