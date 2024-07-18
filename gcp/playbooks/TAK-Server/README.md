@@ -30,7 +30,7 @@ echo -n "my super secret data" | gcloud secrets create registry-secret \
 ## Variables
 
 | Name | Description | Default | Type | Validation |
-|---|---|---|---|---|---|
+|---|---|---|---|---|
 | region | GCP Region to deploy into | us-east4 | string | N/A |
 | prefix | Prefix used for resource names. | N/A | string | Cannot be empty |
 | project_create | Provide values if project creation is needed | null | object | N/A |
