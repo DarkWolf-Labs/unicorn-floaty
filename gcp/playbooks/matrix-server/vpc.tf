@@ -21,25 +21,22 @@ module "vpc-firewall" {
     admin_ranges = ["10.0.0.0/20"]
   }
   ingress_rules = {
-    #TODO Remove and rely on 'ssh' tag once terraform-provider-google/issues/9273 is fixed
     ("${var.prefix}-iap") = {
       description   = "Enable SSH from IAP target VMs."
       source_ranges = ["35.235.240.0/20"]
       targets       = ["iap-ssh"]
       rules         = [{ protocol = "tcp", ports = [22] }]
     }
-    ("${var.prefix}-tak") = {
-      description = "Inbound ports required for TAK Server"
-      target      = ["tak-server"]
+    ("${var.prefix}-matrix") = {
+      description = "Inbound ports required for matrix Server"
+      target      = ["matrix-server"]
       rules = [
         {
           source_ranges = ["10.0.0.0/20"]
           protocol      = "tcp",
           ports = [
-            8089,
-            8443,
-            8444,
-            8446
+            80,
+            443
           ]
         }
       ]
