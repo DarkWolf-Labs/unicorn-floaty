@@ -1,6 +1,8 @@
 #!/bin/bash
 dnf makecache
-dnf install -yq dnf-plugin-artifact-registry yum-utils
+dnf install -yq dnf-plugin-artifact-registry yum-utils python3-pip
+
+pip3 install podman-compose
 
 # Install the ops-agent
 curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
@@ -32,4 +34,4 @@ gcloud auth configure-docker \
 mkdir -p /opt/matrix
 gcloud secrets versions access latest --secret ${compose_file} --out-file /opt/matrix/docker-compose.yml
 cd /opt/matrix/
-docker-compose up -d
+podman-compose up -d

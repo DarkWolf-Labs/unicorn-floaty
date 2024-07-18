@@ -14,7 +14,6 @@ module "matrix-service-account" {
     ]
   }
 }
-# Create a GCS bucket
 resource "google_secret_manager_secret" "docker-compose" {
   secret_id = "docker-compose"
   project   = module.project.id
