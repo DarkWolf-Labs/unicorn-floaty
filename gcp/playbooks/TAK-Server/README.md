@@ -17,7 +17,7 @@ This blueprint deploys a TAK server with the following configuration
 
 To complete this deployment, you will have to get TAK Server from Iron Bank. This project configures Iron Bank as an Artifact Registry pull-through, but you will need Iron Bank credentials to get started.
 
- *TODO*: Typically we handle this in a bootstrap project somewhere else, because right now this will fail the first time through because the project doesn't exist yet. For now, you will have to run the `terraform apply` and it will fail out, then you create the secret, then you rerun `terraform apply`.
+ *TODO*: Typically we handle this in a bootstrap project somewhere else, because right now this will fail the first time through because the project doesn't exist yet. For now, you will have to run the `terraform apply --target module.project`, then you create the secret, then you rerun `terraform apply`.
 
 Once you have your credentials ready, use the following command to add them to your gcloud project as a secret
 ```
