@@ -29,11 +29,7 @@ dnf install docker -yq
 gcloud auth configure-docker \
     ${region}-docker.pkg.dev
 
-docker pull ${image_path}
-
-mkdir -p /opt/tak/logs
-gcloud secrets versions access latest --secret ${core_config} --out-file /opt/tak/CoreConfig.xml
-
-docker run --name takserver-hardened -p 8089:8089 -p 8443:8443 -p 8444:8444 -p 8446:8446 -t -d takserver-hardened \
-  --volume /opt/tak/CoreConfig.xml:/opt/tak/CoreConfig.xml \
-  --volume /opt/tak/logs/:/opt/tak/logs/
+mkdir -p /opt/matrix
+gcloud secrets versions access latest --secret ${compose_file} --out-file /opt/matrix/docker-compose.yml
+cd /opt/matrix/
+docker-compose up -d

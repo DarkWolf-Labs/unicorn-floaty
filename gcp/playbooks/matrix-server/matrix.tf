@@ -14,6 +14,38 @@ module "matrix-service-account" {
     ]
   }
 }
+# Create a GCS bucket
+resource "google_secret_manager_secret" "docker-compose" {
+  secret_id = "docker-compose"
+  project   = module.project.id
+
+  replication {
+    user_managed {
+      replicas {
+        location = var.region
+      }
+    }
+  }
+}
+
+resource "google_secret_manager_secret_iam_binding" "docker-compose-secret-binding" {
+  project   = module.project.id
+  secret_id = google_secret_manager_secret.docker-compose.secret_id
+  role      = "roles/secretmanager.secretAccessor"
+  members = [
+    module.matrix-service-account.service_account.member,
+  ]
+}
+
+# Store this as a secret because it has the db-password in it
+resource "google_secret_manager_secret_version" "docker-compose-version" {
+  secret = google_secret_manager_secret.docker-compose.id
+  secret_data = templatefile("./templates/docker-compose.yml", {
+    region      = var.region,
+    registryone = local.registry-one,
+    servername  = var.server_name
+  })
+}
 
 # Google Compute Engine VM Module
 module "compute-engine-vm" {
@@ -46,10 +78,9 @@ module "compute-engine-vm" {
 
   # Check the status of the startup script on the box with `sudo journalctl -u google-startup-scripts.service`
   metadata = {
-    startup-script = templatefile("./templates/docker-compose.yml", {
-      region      = var.region
-      registryone  = local.registry-one,
-      servername = var.server_name
+    startup-script = templatefile("./templates/userdata.tftpl", {
+      region       = var.region,
+      compose_file = google_secret_manager_secret.docker-compose.secret_id
     })
   }
 
