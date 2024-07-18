@@ -23,7 +23,6 @@ variable "key_name" {
   type        = string
 }
 
-
 variable "subnet_id" {
   description = "ID of the subnet to launch the instance in"
   type        = string

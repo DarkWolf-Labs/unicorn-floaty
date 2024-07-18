@@ -1,8 +1,8 @@
-module "matrix_server" {
+module "openvpn_server" {
   source            = "../../modules/ec2/instance"
   project_name      = var.project_name
   environment       = var.environment
-  instance_name     = "matrix-server"
+  instance_name     = "openvpn-server"
   ami_id            = var.ami_id
   instance_type     = var.instance_type
   key_name          = var.key_name
@@ -13,10 +13,7 @@ module "matrix_server" {
                       #!/bin/bash
                       apt-get update
                       apt-get upgrade -y
-                      apt-get install -y docker.io docker-compose
-                      systemctl start docker
-                      systemctl enable docker
-                      mkdir -p /opt/matrix
-                      # Add Matrix setup steps here
+                      apt-get install -y openvpn easy-rsa
+                      # Add OpenVPN setup steps here
                       EOF
 }

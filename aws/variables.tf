@@ -32,3 +32,18 @@ variable "environment" {
   description = "Environment (e.g., dev, staging, prod)"
   type        = string
 }
+
+variable "instance_type" {
+  description = "EC2 instance type"
+  type        = string
+}
+
+variable "ubuntu_ami_id" {
+  description = "AMI ID for Ubuntu"
+  type        = string
+}
+
+variable "debian_ami_id" {
+  description = "AMI ID for Debian"
+  type        = string
+}

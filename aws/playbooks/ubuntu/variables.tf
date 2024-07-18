@@ -9,7 +9,7 @@ variable "environment" {
 }
 
 variable "ami_id" {
-  description = "AMI ID for the Debian instance"
+  description = "AMI ID for the Ubuntu instance"
   type        = string
 }
 
@@ -22,7 +22,6 @@ variable "key_name" {
   description = "Name of the EC2 key pair"
   type        = string
 }
-
 
 variable "subnet_id" {
   description = "ID of the subnet to launch the instance in"

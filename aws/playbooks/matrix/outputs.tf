@@ -1,9 +1,9 @@
-output "matrix_server_public_ip" {
-  description = "The public IP address of the Matrix chat server"
-  value       = aws_eip.matrix_ip.public_ip
+output "instance_id" {
+  description = "ID of the Matrix EC2 instance"
+  value       = module.matrix_server.instance_id
 }
 
-output "matrix_server_instance_id" {
-  description = "The instance ID of the Matrix chat server"
-  value       = aws_instance.matrix_server.id
+output "public_ip" {
+  description = "Public IP address of the Matrix EC2 instance"
+  value       = module.matrix_server.public_ip
 }

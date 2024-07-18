@@ -13,21 +13,25 @@ output "private_subnet_ids" {
   value       = module.vpc.private_subnet_ids
 }
 
-output "internet_gateway_id" {
-  description = "The ID of the Internet Gateway"
-  value       = module.vpc.internet_gateway_id
+output "ubuntu_server_public_ip" {
+  description = "Public IP of the Ubuntu server"
+  value       = module.ubuntu_server.public_ip
 }
 
-# output "matrix_server_public_ip" {
-#   description = "The public IP address of the Matrix chat server"
-#   value       = module.matrix_server.matrix_server_public_ip
-# }
+output "traccar_server_public_ip" {
+  description = "Public IP of the Traccar server"
+  value       = module.traccar_server.public_ip
+}
 
-# output "matrix_server_instance_id" {
-#   description = "The instance ID of the Matrix chat server"
-#   value       = module.matrix_server.matrix_server_instance_id
-# }
+output "openvpn_server_public_ip" {
+  description = "Public IP of the OpenVPN server"
+  value       = module.openvpn_server.public_ip
+}
 
+output "matrix_server_public_ip" {
+  description = "Public IP of the Matrix server"
+  value       = module.matrix_server.public_ip
+}
 # output "nat_gateway_ids" {
 #   description = "List of NAT Gateway IDs"
 #   value       = module.vpc.nat_gateway_ids
