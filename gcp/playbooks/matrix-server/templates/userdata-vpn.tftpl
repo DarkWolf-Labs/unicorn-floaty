@@ -34,3 +34,13 @@ ln -s /usr/share/easy-rsa/ /~/easy-rsa/
 echo 'set_var EASYRSA "$HOME/easy-rsa"' > ~/easy-rsa/vars
 
 sudo systemctl enable --now openvpn@server
+
+# Configure Elastic Agent
+
+# This should be hosted in your environment and not pulled out of the wild!
+curl -L -O https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-8.14.3-x86_64.rpm
+sudo rpm -vi elastic-agent-8.14.3-x86_64.rpm
+
+mkdir -p /etc/elastic-agent/
+gcloud secrets versions access latest --secret elastic-agent --out-file /etc/elastic-agent/elastic-agent.yml
+systemctl enable --now elastic-agent

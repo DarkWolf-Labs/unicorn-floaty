@@ -44,7 +44,7 @@ module "openvpn-vm" {
   # Check the status of the startup script on the box with `sudo journalctl -u google-startup-scripts.service`
   metadata = {
     startup-script = templatefile("./templates/userdata-vpn.tftpl", {
-      region       = var.region,
+      region = var.region,
     })
   }
 
