@@ -1,0 +1,6 @@
+outputs:
+  default:
+    type: elasticsearch
+    hosts:
+      - 'https://redactedredactedredactedredacted.${region}.gcp.cloud.es.io:443'
+    api_key: redactedredactedredactedredactedredactedredacted
