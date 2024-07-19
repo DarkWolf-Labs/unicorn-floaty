@@ -5,7 +5,7 @@ variable "region" {
 
   validation {
     error_message = "Must be a valid GCP region"
-    condition = contains( ["us-central1", "us-central2", "us-east1", "us-east2", "us-east4", "us-south1", "us-west1", "us-west3", "us-west4"], var.region)
+    condition     = contains(["us-central1", "us-central2", "us-east1", "us-east2", "us-east4", "us-south1", "us-west1", "us-west3", "us-west4"], var.region)
   }
 }
 variable "prefix" {
@@ -14,7 +14,7 @@ variable "prefix" {
 
   validation {
     error_message = "Prefix must have between 2 and 5 alphanumeric characters."
-    condition = length(var.prefix) >= 2 && length(var.prefix) <= 5
+    condition     = length(var.prefix) >= 2 && length(var.prefix) <= 5
   }
 }
 
