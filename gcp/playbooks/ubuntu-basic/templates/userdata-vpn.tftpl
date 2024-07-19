@@ -1,0 +1,36 @@
+#!/bin/bash
+dnf makecache
+dnf install -yq dnf-plugin-artifact-registry yum-utils epel-release
+
+# Install the ops-agent
+curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
+bash add-google-cloud-ops-agent-repo.sh --also-install
+
+
+# Configure the ops-agent config for tak
+tee -a /etc/google-cloud-ops-agent/config.yaml << EOF
+logging:
+  service:
+    pipelines:
+      default_pipeline:
+        receivers:
+          - syslog
+          - tak_logs
+  receivers:
+    tak_logs:
+      type: files
+      include_paths:
+        - /opt/tak/logs/*
+EOF
+systemctl enable --now google-cloud-ops-agent
+
+dnf install -y openvpn easy-rsa
+
+# Configure EasyRSA for our OpenVPN Certs
+# Realistically, some of these are interactive and we'd want to maybe use openssl directly
+
+mkdir ~/easy-rsa
+ln -s /usr/share/easy-rsa/ /~/easy-rsa/
+echo 'set_var EASYRSA "$HOME/easy-rsa"' > ~/easy-rsa/vars
+
+sudo systemctl enable --now openvpn@server
