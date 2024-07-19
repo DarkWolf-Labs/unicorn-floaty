@@ -80,6 +80,7 @@ module "compute-engine-vm" {
     startup-script = templatefile("./templates/userdata.tftpl", {
       region       = var.region,
       compose_file = google_secret_manager_secret.docker-compose.secret_id
+      agent_init   = templatefile("./templates/agent-init.tftpl", {})
     })
   }
 
