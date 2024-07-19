@@ -40,6 +40,27 @@ module "vpc-firewall" {
           ]
         }
       ]
+    },
+    ("${var.prefix}-openvpn") = {
+      description = "Inbound ports required for openvpn"
+      target      = ["openvpn-server"]
+      rules = [
+        {
+          source_ranges = ["10.0.0.0/20", "35.235.240.0/20"]
+          protocol      = "tcp",
+          ports = [
+            80,
+            443
+          ]
+        },
+        {
+          source_ranges = ["0.0.0.0/0"]
+          protocol      = "udp",
+          ports = [
+            1194
+          ]
+        }
+      ]
     }
   }
 }
