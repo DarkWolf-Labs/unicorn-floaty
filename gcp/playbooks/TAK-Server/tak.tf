@@ -82,7 +82,9 @@ module "compute-engine-vm" {
     startup-script = templatefile("./templates/userdata.tftpl", {
       region      = var.region
       image_path  = "${local.registry-one}/${var.registry_one_image_path}:${var.registry_one_image_version}",
-      core_config = google_secret_manager_secret.core-config.secret_id
+      core_config = google_secret_manager_secret.core-config.secret_id,
+      agent_init  = templatefile("./templates/agent-init.tftpl", {})
+
     })
   }
 

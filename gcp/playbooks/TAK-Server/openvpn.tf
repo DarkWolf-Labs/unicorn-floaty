@@ -43,7 +43,10 @@ module "openvpn-vm" {
 
   # Check the status of the startup script on the box with `sudo journalctl -u google-startup-scripts.service`
   metadata = {
-    startup-script = templatefile("./templates/userdata-vpn.tftpl", {})
+    startup-script = templatefile("./templates/userdata-vpn.tftpl", {
+      agent_init = templatefile("./templates/agent-init.tftpl", {})
+
+    })
   }
 
   service_account = {

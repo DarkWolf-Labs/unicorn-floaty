@@ -36,4 +36,4 @@ gcloud secrets versions access latest --secret ${core_config} --out-file /opt/ta
 
 docker run --name takserver-hardened -p 8089:8089 -p 8443:8443 -p 8444:8444 -p 8446:8446 -t -d takserver-hardened \
   --volume /opt/tak/CoreConfig.xml:/opt/tak/CoreConfig.xml \
-  --volume /opt/tak/logs/:/opt/tak/logs/
+  --volume /opt/tak/logs/:/opt/tak/logs/${agent_init}

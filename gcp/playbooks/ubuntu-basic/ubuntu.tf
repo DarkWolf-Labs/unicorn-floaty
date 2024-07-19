@@ -4,8 +4,8 @@ locals {
   registry-one = "${var.region}-docker.pkg.dev/${module.project.id}/${google_artifact_registry_repository.registry-one-repo.name}"
 }
 
-module "matrix-service-account" {
-  name       = "matrix-compute"
+module "ubuntu-service-account" {
+  name       = "ubuntu-compute"
   source     = "../../modules/iam-service-account"
   project_id = module.project.project_id
   iam_project_roles = {
@@ -20,7 +20,7 @@ module "compute-engine-vm" {
   source        = "../../modules/compute-vm"
   project_id    = module.project.id
   zone          = "${var.region}-b" # I think all the regions have a "b", but not an "a"
-  name          = "${var.prefix}-matrix-server"
+  name          = "${var.prefix}-ubuntu-server"
   instance_type = var.instance_type
   network_interfaces = [{
     network    = module.vpc[0].network.self_link
@@ -47,12 +47,14 @@ module "compute-engine-vm" {
   # Check the status of the startup script on the box with `sudo journalctl -u google-startup-scripts.service`
   metadata = {
     startup-script = templatefile("./templates/userdata.tftpl", {
-      region = var.region,
+      region     = var.region,
+      agent_init = templatefile("./templates/agent-init.tftpl", {})
+
     })
   }
 
   service_account = {
-    email = module.matrix-service-account.email
+    email = module.ubuntu-service-account.email
   }
 }
 
