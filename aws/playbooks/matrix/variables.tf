@@ -33,3 +33,15 @@ variable "security_group_id" {
   description = "ID of the security group"
   type        = string
 }
+
+variable "matrix_domain" {
+  description = "Domain name for the Matrix server"
+  type        = string
+  default     = "domain.com"
+}
+
+variable "auto_start_matrix" {
+  description = "Whether to automatically start Matrix services after setup"
+  type        = bool
+  default     = false
+}

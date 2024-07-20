@@ -33,7 +33,7 @@ module "ubuntu_server" {
   instance_type     = var.instance_type
   key_name          = module.keypair.key_name
   subnet_id         = module.vpc.public_subnet_ids[0]
-  security_group_id = module.security_group.security_group_id
+  security_group_id = module.security_group.ubuntu_security_group_id
 }
 
 module "traccar_server" {
@@ -44,7 +44,7 @@ module "traccar_server" {
   instance_type     = var.instance_type
   key_name          = module.keypair.key_name
   subnet_id         = module.vpc.public_subnet_ids[0]
-  security_group_id = module.security_group.security_group_id
+  security_group_id = module.security_group.traccar_security_group_id
 }
 
 module "openvpn_server" {
@@ -55,7 +55,7 @@ module "openvpn_server" {
   instance_type     = var.instance_type
   key_name          = module.keypair.key_name
   subnet_id         = module.vpc.public_subnet_ids[0]
-  security_group_id = module.security_group.security_group_id
+  security_group_id = module.security_group.openvpn_security_group_id
 }
 
 module "matrix_server" {
@@ -66,5 +66,8 @@ module "matrix_server" {
   instance_type     = var.instance_type
   key_name          = module.keypair.key_name
   subnet_id         = module.vpc.public_subnet_ids[0]
-  security_group_id = module.security_group.security_group_id
+  security_group_id = module.security_group.matrix_security_group_id
+  private_key_path  = module.keypair.private_key_path
+  matrix_domain     = var.matrix_domain
+  auto_start_matrix = var.auto_start_matrix
 }

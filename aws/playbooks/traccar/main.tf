@@ -11,12 +11,16 @@ module "traccar_server" {
   os_user           = "admin"
   user_data         = <<-EOF
                       #!/bin/bash
-                      apt-get update
-                      apt-get upgrade -y
-                      apt-get install -y openjdk-11-jre-headless
-                      wget https://github.com/traccar/traccar/releases/download/v4.15/traccar-linux-64-4.15.zip
-                      unzip traccar-linux-64-4.15.zip
-                      ./traccar.run
+                      sudo apt-get update
+                      sudo apt-get upgrade -y
+                      sudo apt-get install -y openjdk-11-jre-headless
+                      sudo apt install unzip
+                      sudo apt-get install default-jre -y
+                      sudo wget https://github.com/traccar/traccar/releases/download/v6.2/traccar-linux-64-6.2.zip
+                      sudo unzip traccar-linux-64-6.2.zip -d /opt/
+                      cd /opt
+                      sudo ./traccar.run
+                      sudo systemctl start traccar
                       EOF
   root_volume_size  = 20
 }
