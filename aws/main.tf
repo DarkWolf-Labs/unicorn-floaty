@@ -71,3 +71,26 @@ module "matrix_server" {
   matrix_domain     = var.matrix_domain
   auto_start_matrix = var.auto_start_matrix
 }
+
+module "tak_server" {
+  source            = "./playbooks/tak"
+  project_name      = var.project_name
+  environment       = var.environment
+  ami_id            = var.debian_ami_id
+  instance_type     = var.instance_type
+  key_name          = module.keypair.key_name
+  subnet_id         = module.vpc.public_subnet_ids[0]
+  security_group_id = module.security_group.tak_security_group_id
+  private_key_path  = module.keypair.private_key_path
+  s3_bucket_name    = aws_s3_bucket.tak_bucket.id
+}
+
+resource "aws_s3_bucket" "tak_bucket" {
+  bucket = "${var.project_name}-${var.environment}-tak-bucket"
+
+  tags = {
+    Name        = "${var.project_name}-${var.environment}-tak-bucket"
+    Environment = var.environment
+    Project     = var.project_name
+  }
+}
