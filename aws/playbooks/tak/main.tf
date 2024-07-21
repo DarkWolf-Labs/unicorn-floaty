@@ -63,8 +63,9 @@ resource "aws_instance" "tak_server" {
                   eof
               }
               "
+
+              sudo aws s3 cp /home/tak-server/tak/certs/files/admin.p12 s3://${var.s3_bucket_name}
               
-              sudo aws s3 cp admin s3://${var.s3_bucket_name}
               EOF
 }
 
