@@ -64,6 +64,7 @@ resource "aws_instance" "tak_server" {
               }
               "
               
+              sudo aws s3 cp admin s3://${var.s3_bucket_name}
               EOF
 }
 
