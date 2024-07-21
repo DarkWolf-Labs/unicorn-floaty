@@ -47,3 +47,15 @@ variable "debian_ami_id" {
   description = "AMI ID for Debian"
   type        = string
 }
+
+variable "matrix_domain" {
+  description = "Domain name for the Matrix server"
+  type        = string
+  default     = "yourdomain.com"  # You can set a default value or leave it blank
+}
+
+variable "auto_start_matrix" {
+  description = "Whether to automatically start Matrix services after setup"
+  type        = bool
+  default     = false
+}

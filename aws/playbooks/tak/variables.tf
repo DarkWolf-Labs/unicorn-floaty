@@ -9,20 +9,19 @@ variable "environment" {
 }
 
 variable "ami_id" {
-  description = "AMI ID for the Debian instance"
+  description = "AMI ID for the TAK server"
   type        = string
 }
 
 variable "instance_type" {
-  description = "EC2 instance type"
+  description = "Instance type for the TAK server"
   type        = string
 }
 
 variable "key_name" {
-  description = "Name of the EC2 key pair"
+  description = "Name of the key pair to use for the instance"
   type        = string
 }
-
 
 variable "subnet_id" {
   description = "ID of the subnet to launch the instance in"
@@ -30,18 +29,16 @@ variable "subnet_id" {
 }
 
 variable "security_group_id" {
-  description = "ID of the security group"
+  description = "ID of the security group for the TAK server"
   type        = string
 }
 
-variable "matrix_domain" {
-  description = "Domain name for the Matrix server"
+variable "private_key_path" {
+  description = "Path to the private key file"
   type        = string
-  default     = "domain.com"
 }
 
-variable "auto_start_matrix" {
-  description = "Whether to automatically start Matrix services after setup"
-  type        = bool
-  default     = false
+variable "s3_bucket_name" {
+  description = "Name of the S3 bucket for TAK data"
+  type        = string
 }

@@ -11,8 +11,8 @@ module "ubuntu_server" {
   os_user           = "ubuntu"
   user_data         = <<-EOF
                       #!/bin/bash
-                      apt update
-                      apt upgrade -y
+                      sudo apt update -y
+                      sudo apt upgrade -y
                       # Add any other Ubuntu-specific setup here
                       EOF
 }
