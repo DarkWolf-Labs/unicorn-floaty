@@ -28,7 +28,7 @@ resource "aws_instance" "tak_server" {
               
               # Install AWS CLI
               sudo apt-get update -y
-              sudo apt-get install -y awscli unzip git net-tools ca-certificates curl gnupg
+              sudo apt-get install -y awscli unzip git net-tools ca-certificates curl gnupg expect
 
 
               # Set up Docker repository
