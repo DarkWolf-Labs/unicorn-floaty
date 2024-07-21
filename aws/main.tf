@@ -83,6 +83,7 @@ module "tak_server" {
   security_group_id = module.security_group.tak_security_group_id
   private_key_path  = module.keypair.private_key_path
   s3_bucket_name    = aws_s3_bucket.tak_bucket.id
+  depends_on = [aws_s3_bucket.tak_bucket]
 }
 
 resource "aws_s3_bucket" "tak_bucket" {
