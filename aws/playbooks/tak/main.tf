@@ -55,8 +55,15 @@ resource "aws_instance" "tak_server" {
               # Download the TAK server ZIP from S3
               sudo aws s3 cp s3://${var.s3_bucket_name}/takserver-docker-5.1-RELEASE-40.zip /home/tak-server/
 
+              # using expect to avoid changes to upstream scripts openssl usage
+              expect -c "
+              spawn ./scripts/setup.sh
+              expect {
+                  timeout { send \"\r\"; exp_continue }
+                  eof
+              }
+              "
               
-              # Add any additional TAK server setup steps here
               EOF
 }
 
