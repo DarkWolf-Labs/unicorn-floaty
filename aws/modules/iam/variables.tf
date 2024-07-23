@@ -23,5 +23,5 @@ variable "s3_bucket_name" {
 variable "s3_actions" {
   description = "List of S3 actions to allow"
   type        = list(string)
-  default     = ["s3:GetObject", "s3:ListBucket"]
+  default     = ["s3:GetObject", "s3:ListBucket", "s3:PutObject"]
 }

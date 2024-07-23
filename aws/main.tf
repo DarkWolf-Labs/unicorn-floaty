@@ -30,7 +30,7 @@ module "ubuntu_server" {
   project_name      = var.project_name
   environment       = var.environment
   ami_id            = var.ubuntu_ami_id
-  instance_type     = var.instance_type
+  instance_type     = var.default_instance_type
   key_name          = module.keypair.key_name
   subnet_id         = module.vpc.public_subnet_ids[0]
   security_group_id = module.security_group.ubuntu_security_group_id
@@ -41,7 +41,7 @@ module "traccar_server" {
   project_name      = var.project_name
   environment       = var.environment
   ami_id            = var.debian_ami_id
-  instance_type     = var.instance_type
+  instance_type     = var.default_instance_type
   key_name          = module.keypair.key_name
   subnet_id         = module.vpc.public_subnet_ids[0]
   security_group_id = module.security_group.traccar_security_group_id
@@ -52,7 +52,7 @@ module "openvpn_server" {
   project_name      = var.project_name
   environment       = var.environment
   ami_id            = var.debian_ami_id
-  instance_type     = var.instance_type
+  instance_type     = var.default_instance_type
   key_name          = module.keypair.key_name
   subnet_id         = module.vpc.public_subnet_ids[0]
   security_group_id = module.security_group.openvpn_security_group_id
@@ -63,7 +63,7 @@ module "matrix_server" {
   project_name      = var.project_name
   environment       = var.environment
   ami_id            = var.debian_ami_id
-  instance_type     = var.instance_type
+  instance_type     = var.default_instance_type
   key_name          = module.keypair.key_name
   subnet_id         = module.vpc.public_subnet_ids[0]
   security_group_id = module.security_group.matrix_security_group_id
@@ -77,12 +77,13 @@ module "tak_server" {
   project_name      = var.project_name
   environment       = var.environment
   ami_id            = var.debian_ami_id
-  instance_type     = var.instance_type
+  instance_type     = var.tak_instance_type
   key_name          = module.keypair.key_name
   subnet_id         = module.vpc.public_subnet_ids[0]
   security_group_id = module.security_group.tak_security_group_id
   private_key_path  = module.keypair.private_key_path
   s3_bucket_name    = aws_s3_bucket.tak_bucket.id
+  depends_on = [aws_s3_bucket.tak_bucket]
 }
 
 resource "aws_s3_bucket" "tak_bucket" {
