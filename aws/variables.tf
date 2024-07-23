@@ -33,8 +33,13 @@ variable "environment" {
   type        = string
 }
 
-variable "instance_type" {
-  description = "EC2 instance type"
+variable "default_instance_type" {
+  description = "Default EC2 instance type"
+  type        = string
+}
+
+variable "tak_instance_type" {
+  description = "EC2 instance type for TAK server"
   type        = string
 }
 

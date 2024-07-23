@@ -4,7 +4,7 @@ module "tak_iam" {
   environment    = var.environment
   service_name   = "tak"
   s3_bucket_name = var.s3_bucket_name
-  s3_actions     = ["s3:GetObject", "s3:ListBucket"]
+  s3_actions     = ["s3:GetObject", "s3:ListBucket", "s3:PutObject"]
 }
 
 resource "aws_instance" "tak_server" {
@@ -12,7 +12,6 @@ resource "aws_instance" "tak_server" {
   instance_type = var.instance_type
   key_name      = var.key_name
   subnet_id     = var.subnet_id
-
   vpc_security_group_ids = [var.security_group_id]
   iam_instance_profile   = module.tak_iam.instance_profile_name
   depends_on = [aws_s3_object.tak_zip]
@@ -55,17 +54,22 @@ resource "aws_instance" "tak_server" {
               # Download the TAK server ZIP from S3
               sudo aws s3 cp s3://${var.s3_bucket_name}/takserver-docker-5.1-RELEASE-40.zip /home/tak-server/
 
+              cd /home/tak-server/
+
               # using expect to avoid changes to upstream scripts openssl usage
-              expect -c "
+              sudo expect -c "
               spawn ./scripts/setup.sh
               expect {
                   timeout { send \"\r\"; exp_continue }
                   eof
               }
               "
-
+              
+              # Copy cert neded for WebFE Access
               sudo aws s3 cp /home/tak-server/tak/certs/files/admin.p12 s3://${var.s3_bucket_name}
               
+              
+              # Add any additional TAK server setup steps here
               EOF
 }
 
