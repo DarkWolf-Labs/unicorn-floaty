@@ -41,6 +41,7 @@ module "matrix_server" {
     sudo mv /tmp/docker-compose.yml /tmp/matrix/
     sudo mv /tmp/matrix/ /home/matrix/
     cd /home/matrix/
+    # The server name will have to be the IP address of the machine in dev but you can use a FQDN in production
     docker run --rm -v ./data:/data -e SYNAPSE_SERVER_NAME=domain.com -e SYNAPSE_REPORT_STATS=yes matrixdotorg/synapse:latest generate
     docker compose up -d
 
